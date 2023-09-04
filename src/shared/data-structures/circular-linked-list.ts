@@ -1,7 +1,7 @@
-import LinkedList from './linked-list';
+import LinkedList, { ILinkedListNode } from './linked-list';
 
 export default class CircularLinkedList<T> extends LinkedList<T> {
-  constructor(...nodes: any[]) {
+  constructor(nodes: any[]) {
     super(nodes);
 
     this.circulate();

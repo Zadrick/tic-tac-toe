@@ -28,11 +28,12 @@ export default class LinkedList<T> implements ILinkedList<T> {
   constructor(array: any[]) {
     if (!array.length) throw new Error('array should contain at least one element');
 
-    this.head = LinkedList.arrayToNodes<T>(array[0]);
-    this.tail = LinkedList.arrayToNodes<T>(array.length > 1 ? array.slice(1, 1): array);
-    this.head.next = this.tail;
+    this.head = LinkedList.arrayToNodes<T>([array[0]]);
 
-    for (const element of array.slice(2)) this.append(element);
+    this.tail = this.head;
+
+
+    for (const element of array.slice(1)) this.append(element);
   }
 
   append(value: T): void {

@@ -6,18 +6,22 @@ export interface IMatrixCoordinates {
 }
 
 class Matrix<T = number> {
-  private data: Array2D<T>;
+  rows: Array2D<T>;
+  cols: Array2D<T>;
 
-  constructor(rows, cols) {
-    this.data = new Array2D(rows, cols);
+  constructor(rows: number, cols: number) {
+    this.rows = new Array2D(cols, cols);
+
+    this.cols = new Array2D(cols, rows);
   }
 
   get({ row, column }: IMatrixCoordinates): T {
-    return this.data[row][column];
+    return this.rows[row][column];
   }
 
-  set({ row, column }: IMatrixCoordinates, value): void {
-    this.data[row][column] = value;
+  set({ row, column }: IMatrixCoordinates, value: any): void {
+    this.rows[row][column] = value;
+    this.cols[column][row] = value;
   }
 }
 

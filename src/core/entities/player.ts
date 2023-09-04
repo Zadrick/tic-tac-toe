@@ -1,14 +1,16 @@
-import Board from './board';
-import { IMatrixCoordinates } from 'shared/data-structures/matrix';
+import { IMatrixCoordinates } from '@/shared/data-structures/matrix';
+import { IPlayer, GameSides, ITicTacToe } from './contracts';
 
-export enum GameSides {
-  X = 'X',
-  O = 'O',
-}
 
-export interface IPlayer {
-  side: GameSides;
-  board: Board;
+export default abstract class Player implements IPlayer {
+  abstract readonly side: GameSides;
+  readonly game: ITicTacToe;
 
-  markMove(coordinates: IMatrixCoordinates): void;
+  constructor(game: ITicTacToe) {
+    this.game = game;
+  }
+
+  markMove(coordinates: IMatrixCoordinates): void {
+    this.game.markMove(coordinates);
+  }
 }

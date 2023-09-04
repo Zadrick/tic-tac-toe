@@ -1,16 +1,11 @@
-import { Singleton } from 'shared/decorators/singletone';
-import { GameSides, IPlayer } from './player';
-import { IMatrixCoordinates } from 'shared/data-structures/matrix';
+import { GameSides, ITicTacToe, IPlayerX } from './contracts';
+import Player from './player';
 
-import Board from './board';
+class PlayerX extends Player implements IPlayerX {
+  override readonly side: GameSides.X = GameSides.X;
 
-@Singleton
-class PlayerX implements IPlayer {
-  readonly side: GameSides.X = GameSides.X;
-  readonly board = new Board();
-
-  markMove(coordinates: IMatrixCoordinates): void {
-    this.board.markMove(coordinates);
+  constructor(game: ITicTacToe) {
+    super(game);
   }
 }
 

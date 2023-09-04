@@ -1,18 +1,20 @@
 {
   "name": "tic-tac-toe",
   "version": "1.0.0",
-  "description": "```mermaid     ---     title: Tic-tac-toe     ---",
+  "description": "",
   "main": "index.js",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview"
+    "build": "vite build",
+    "watch": "vite build --watch",
+    "start": "node ./dist/main"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "typescript": "^5.1.6",
-    "vite": "^4.4.5"
+    "@types/node": "20.5.7",
+    "typescript": "5.1.6",
+    "vite": "4.4.5"
   }
 }
