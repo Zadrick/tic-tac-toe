@@ -4,7 +4,6 @@ import { GameSides, IBoard, IPlayer, IPlayerO, IPlayerX, ITicTacToe } from './co
 import CircularLinkedList from '@/shared/data-structures/circular-linked-list';
 import PlayerX from './player-x';
 import PlayerO from './player-o';
-import Array2D from '@/shared/data-structures/array-2D';
 
 export default class TicTacToe implements ITicTacToe {
   board: IBoard = new Board();
@@ -14,6 +13,7 @@ export default class TicTacToe implements ITicTacToe {
   playerO: IPlayerO;
 
   private playersCircularList: CircularLinkedList<IPlayer>;
+  private onWinCbs: VoidFunction[] = [];
 
   constructor() {
     const playerX: IPlayerX = new PlayerX(this);
@@ -41,7 +41,11 @@ export default class TicTacToe implements ITicTacToe {
 
     const hasCurrentPlayerWon = this.hasCurrentPlayerWon();
 
-    if (hasCurrentPlayerWon) return
+    if (hasCurrentPlayerWon) {
+      Object.freeze(this);
+      this.onWinCbs.forEach(cb => cb());
+      return;
+    }
 
     this.iterateTurn();
   }
@@ -49,24 +53,18 @@ export default class TicTacToe implements ITicTacToe {
   hasCurrentPlayerWon(): boolean {
     const currentPlayer: IPlayer = this.currentPlayer;
     const boardData: Matrix<GameSides> = this.board.data;
-    const isEveryMatch = (row: GameSides[]) => row.every(side => side === currentPlayer.side);
 
-    const isHorizontalWinning: boolean = !!boardData.rows.find(isEveryMatch);
-    if (isHorizontalWinning) return true;
-
-    const isVerticalWinning: boolean = !!boardData.cols.find(isEveryMatch);
-    if (isVerticalWinning) return true;
-
-    const diagonals: Array2D<GameSides> = new Array2D<GameSides>(2, 3);
-
-    for (let i = 0; i < boardData.rows.length; i++) {
-      diagonals[0][i] = boardData.rows[i][i];
-      diagonals[1][i] = boardData.rows[i][boardData.rows.length - i - 1];
+    function winCheckFactory(representation: 'rows' | 'columns' | 'diagonals') {
+      return !!boardData[representation]
+        .find((row) => row.every(cell => cell.value === currentPlayer.side));
     }
 
-    const isDiagonalWinning: boolean = !!diagonals.find(isEveryMatch);
-    if (isDiagonalWinning) return true;
+    return winCheckFactory('columns') ||
+      winCheckFactory('rows') ||
+      winCheckFactory('diagonals');
+  }
 
-    return false;
+  onWin(cb: VoidFunction) {
+    this.onWinCbs.push(cb);
   }
 }

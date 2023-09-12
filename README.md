@@ -9,13 +9,15 @@ title: Tic-tac-toe
     class IMatrixCoordinates {
         <<interface>>
 
-        + Number row
-        + Number column
+        + Number x
+        + Number y
     }
 
     Matrix --> IMatrixCoordinates
     class Matrix {
-        - Array2D data
+        - Array2D rows
+        - Array2D columns
+        - Array2D diagonals
 
         + set(IMatrixCoordinates)
         + get(IMatrixCoordinates, value)
